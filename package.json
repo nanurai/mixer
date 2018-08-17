@@ -1,0 +1,43 @@
+{
+  "name": "nanurai-mixer-api",
+  "version": "1.0.0",
+  "description": "The API for the nanurai mixer",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "NODE_ENV=test NODE_PATH=src find ./src -name '*.spec.js' | xargs  mocha -R spec --require ./test/configuration.js",
+    "test-watch": "NODE_ENV=test NODE_PATH=src find ./src -name '*.spec.js' | xargs mocha --watch -R spec --require ./test/configuration.js",
+    "coverage": "NODE_ENV=test NODE_PATH=src find ./src -name '*.spec.js' | xargs nyc --reporter=html mocha -R spec --require ./test/configuration.js",
+    "acceptance": "NODE_ENV=test NODE_PATH=src mocha -R spec --require ./test/configuration.js test/acceptance --recursive"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nanurai/mixer.git"
+  },
+  "author": "Nanurai Developers",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nanurai/mixer/issues"
+  },
+  "homepage": "https://github.com/nanurai/mixer#readme",
+  "dependencies": {
+    "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
+    "chai-sorted": "^0.2.0",
+    "koa": "^2.5.2",
+    "koa-bodyparser": "^4.2.1",
+    "koa-multer": "^1.0.2",
+    "koa-response-time": "^2.0.0",
+    "koa-router": "^7.4.0",
+    "mongoose": "^5.2.8",
+    "nanocurrency": "^2.0.3",
+    "rand-token": "^0.4.0",
+    "rewire": "^4.0.1",
+    "sinon-chai": "^3.2.0",
+    "socket.io": "^2.1.1"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0",
+    "sinon": "^6.1.5"
+  }
+}

@@ -8,9 +8,15 @@ const bodyparser = require('koa-bodyparser')
 const errorMiddleware = require('../middleware/error')
 const handlers = require('../socket/handlers')
 const bootstrap = require('../bootstrap')
+const chain = require('../private/chain/controller')
 
 app.proxy = true
 app.use(require('koa-response-time')())
+app.use(require('koa-morgan')('combined', {
+  skip: function(req, res) {
+    return res.statusCode < 400
+  }
+}))
 app.use(bodyparser())
 app.use(errorMiddleware)
 app.use(router.routes())
@@ -21,10 +27,13 @@ module.exports = {
     try {
       await database.connect()
       await bootstrap.run()
+
       await socket.listen(4000)
       console.log('socket listening on port 4000')
+
       this.server = await app.listen(3000)
       console.log('server listening on port 3000')
+
       socket.io.on('connection', socket => {
         handlers.onConnection(socket)
       })

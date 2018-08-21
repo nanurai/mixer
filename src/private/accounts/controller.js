@@ -16,3 +16,7 @@ exports.createNewAccount = async function() {
 
   return account
 }
+
+exports.findOne = async function(data) {
+  return Account.findOne(data)
+}

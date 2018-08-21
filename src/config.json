@@ -3,5 +3,6 @@
   "MONGO_URL": "mongodb://localhost:27017",
   "FRONTEND_URL": "http://localhost:8080",
   "NETWORK_TYPE": "TESTNET",
-  "SEED": "5572a6cf53a34476cd887e6e22d316dd69177938773b7d96721e31372c6f5be6"
+  "SEED": "d69b485d6e963d3a2d948005274665c7cda78c4a45c933c648a7887ae87a30cb",
+  "REP":"xrb_3betaz86ypbygpqbookmzpnmd5jhh4efmd8arr9a3n4bdmj1zgnzad7xpmfp"
 }

@@ -4,11 +4,15 @@ const Schema = mongoose.Schema
 const JobSchema = new Schema({
   input: {
     type: String,
-    required: true
+    required: true,
+    index: {
+      unique: true
+    }
   },
   output: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   },
   token: {
     type: String,
@@ -18,7 +22,6 @@ const JobSchema = new Schema({
   timestamps: true
 })
 
-const Mix = mongoose.model('Job', JobSchema)
+const Job = mongoose.model('Job', JobSchema)
 
-module.exports = Mix
-
+module.exports = Job

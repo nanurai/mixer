@@ -4,9 +4,9 @@
   "description": "The API for the nanurai mixer",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "NODE_PATH=./src node src/index.js",
     "test": "NODE_ENV=test NODE_PATH=src find ./src -name '*.spec.js' | xargs  mocha -R spec --require ./test/configuration.js",
-    "test-watch": "NODE_ENV=test NODE_PATH=src find ./src -name '*.spec.js' | xargs mocha --watch -R spec --require ./test/configuration.js",
+    "test:watch": "nodemon --exec NODE_ENV=test NODE_PATH=./src find ./src -name '*.spec.js' | xargs  mocha -R spec --require ./test/configuration.js",
     "coverage": "NODE_ENV=test NODE_PATH=src find ./src -name '*.spec.js' | xargs nyc --reporter=html mocha -R spec --require ./test/configuration.js",
     "acceptance": "NODE_ENV=test NODE_PATH=src mocha -R spec --require ./test/configuration.js test/acceptance --recursive"
   },
@@ -27,6 +27,7 @@
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "chai-sorted": "^0.2.0",
+    "enforce-node-path": "^1.0.0",
     "jayson": "^2.0.6",
     "js-nacl": "^1.2.2",
     "koa": "^2.5.2",
@@ -37,6 +38,7 @@
     "koa-router": "^7.4.0",
     "mongoose": "^5.2.8",
     "nanocurrency": "^2.0.3",
+    "nodemon": "^1.18.3",
     "rand-token": "^0.4.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.5",

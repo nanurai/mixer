@@ -15,6 +15,28 @@ const Payments = require('../../private/payments/model')
 
 const repAccount = config.get('REP')
 
+exports.sendStatus = async function(id) {
+
+  const payment = Payments.findOne({ job })
+  const unworked = Chains.findOne({ job, completed: false })
+
+  if (!unworked) {
+    if (!payment) {
+      io.to(id).emit('update', 'Waiting for Nano')
+    } else {
+      io.to(id).emit('update', `Received Nano. Creating Mix`)
+    }
+    return
+  }
+
+  const workCounts = Chains.getWorkCount({ unworked })
+
+  io.to(id).emit(
+    'update', `Computing: ${workCounts.completed + 1} / ${workCounts.total}`
+  )
+
+}
+
 exports.create = async function({ output }) {
   if (!nanocurrency.checkAddress(output)) {
     const error = new Error('Incorrect nano address')
@@ -137,6 +159,7 @@ exports.generateReceive = async function(account, hash, job) {
 }
 
 exports.sendOutstandingChains = async function(id) {
+  await this.sendStatus(id)
   const job = await Job.findById(id)
   const chains = await Chains.find({ job })
 

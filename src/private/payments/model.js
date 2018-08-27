@@ -22,6 +22,8 @@ const PaymentSchema = new Schema({
     type: String,
     required: true
   }
+}, {
+  timestamps: true
 })
 
 const Payment = mongoose.model('Payment', PaymentSchema)

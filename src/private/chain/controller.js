@@ -217,7 +217,6 @@ exports.createBlocks = async function({ chain }) {
 }
 
 exports.createWork = async function({ chain }) {
-  console.log('creating work')
   const job = await Jobs.findById(chain.job)
   const unsent = await Mix.find({ chain, sent: false }).sort('layer')
   const unrecd = await Mix.find({
@@ -228,10 +227,10 @@ exports.createWork = async function({ chain }) {
     const hash = unrecd[0].received
     const account = unreced[0].account
     const publicKey = util.getAccountPublicKey(account)
-    console.log('1')
     io.to(job._id).emit('work', { block: hash, hash: publicKey })
   } else if (unsent.length === 0 && unrecd.length === 0) {
-    // Do nothing
+    // Work is done, set the chain to completed.
+    await Chain.findOneAndUpdate({ _id: chain._id }, { completed: true })
   } else {
     const firstRec = unrecd[0]
     const firstSent = unsent[0]
@@ -240,13 +239,11 @@ exports.createWork = async function({ chain }) {
       const hash = firstRec.receive
       const account = firstRec.account
       const publicKey = util.getAccountPublicKey(account)
-      console.log('2')
       io.to(job._id).emit('work', { block: hash, hash: publicKey })
     } else {
       const hash = firstSent.send
       const block = await Block.findOne({ hash })
       const previous = block.block.previous
-      console.log('3')
       io.to(job._id).emit('work', { block: hash, hash: previous })
     }
   }
@@ -258,4 +255,20 @@ exports.find = function(query) {
 
 exports.findById = function(query) {
   return Chain.findById(query)
+}
+
+exports.getWorkCount = async function(chain) {
+  const totalSend = await Mix.countDocuments({ chain })
+  const totalReceive = await Mix.countDocuments({ chain, receive: { $exists: true } })
+
+  const total = totalSend + totalReceive
+
+  const sent = await Mix.countDocuments({ chain, sent: true })
+  const received = await Mix.countDocuments({ chain, received: true })
+  const completed = sent + received
+
+  return {
+    total: total,
+    completed 
+  }
 }
